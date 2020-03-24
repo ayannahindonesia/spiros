@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"os"
+	"spiros/custom_modules/seed"
 	"spiros/server/router"
 
 	"github.com/labstack/echo/middleware"
@@ -43,6 +44,11 @@ func main() {
 			os.Exit(0)
 			break
 		}
+		break
+	case "seed":
+		seed.Seed()
+		os.Exit(0)
+		break
 	}
 }
 

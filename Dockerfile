@@ -13,6 +13,7 @@ ENV TZ=${SPIROS_TIMEZONE}
 #     elif [ "${APPENV}" = "dev" ] ; then \
 #         cp deploy/dev-config.yaml config.yaml ; \
 #     fi \
-CMD go build -v -o $GOPATH/bin/spiros \
+CMD go get \
+    && go build -v -o $GOPATH/bin/spiros \
     && spiros run server;
 EXPOSE ${SPIROS_PORT}

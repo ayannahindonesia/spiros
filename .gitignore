@@ -16,3 +16,4 @@ vendor/
 
 # Misc
 docker-compose.yaml
+.vscode/

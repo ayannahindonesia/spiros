@@ -2,10 +2,10 @@ package helper
 
 import "github.com/labstack/echo"
 
-// echoResp type
-type echoResp struct {
-	Code    string      `json:"code"`
-	Message string      `json:"message"`
+// EchoResp type
+type EchoResp struct {
+	Code    string      `json:"code" example:"0001"`
+	Message string      `json:"message" example:"this is example message"`
 	Details interface{} `json:"details"`
 }
 
@@ -14,7 +14,7 @@ func ReturnJSONresp(c echo.Context, httpcode int, code string, message string, d
 	if len(code) <= 0 {
 		code = "0000"
 	}
-	x := echoResp{
+	x := EchoResp{
 		Code:    code,
 		Message: message,
 		Details: details,

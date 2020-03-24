@@ -90,3 +90,31 @@ func Migrate() {
 		panic(err)
 	}
 }
+
+func transaction(fn func(tx *gorm.DB) error) error {
+	// Note the use of tx as the database handle once you are within a transaction
+	tx := DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	if err := tx.Error; err != nil {
+		return err
+	}
+
+	if err := fn(tx); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
+}
+
+// Create function
+func Create(i interface{}) error {
+	return transaction(func(tx *gorm.DB) (err error) {
+		return tx.Create(i).Error
+	})
+}
