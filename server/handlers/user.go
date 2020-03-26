@@ -12,6 +12,11 @@ import (
 	"github.com/labstack/echo"
 )
 
+// ViewCurrentUserResponse struct response for function ViewCurrentUser
+type ViewCurrentUserResponse struct {
+	Username string `json:"username"`
+}
+
 // ViewCurrentUser shows current user's datas
 // @Summary View current user datas
 // @Tags User
@@ -19,16 +24,12 @@ import (
 // @Produce  json
 // @Security OAuth2Password
 // @Router /user/user [get]
-// @Success 200 {object} LoginResponse
+// @Success 200 {object} ViewCurrentUserResponse
 // @Failure 403 {object} helper.EchoResp
 // @Failure 404 {object} helper.EchoResp
 // @Failure 500 {object} helper.EchoResp
 func ViewCurrentUser(c echo.Context) error {
 	defer c.Request().Body.Close()
-
-	type ViewUser struct {
-		Username string `json:"username"`
-	}
 
 	userToken := c.Get("user").(*jwt.Token)
 	tokenClaims := userToken.Claims.(jwt.MapClaims)
@@ -42,5 +43,5 @@ func ViewCurrentUser(c echo.Context) error {
 		})
 	}
 
-	return helper.ReturnJSONresp(c, http.StatusOK, "0000", "Success", ViewUser{Username: user.Username})
+	return helper.ReturnJSONresp(c, http.StatusOK, "0000", "Success", ViewCurrentUserResponse{Username: user.Username})
 }

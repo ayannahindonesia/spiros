@@ -39,6 +39,11 @@ definitions:
         example: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJle...
         type: string
     type: object
+  handlers.ViewCurrentUserResponse:
+    properties:
+      username:
+        type: string
+    type: object
   helper.EchoResp:
     properties:
       code:
@@ -107,7 +112,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handlers.LoginResponse'
+            $ref: '#/definitions/handlers.ViewCurrentUserResponse'
         "403":
           description: Forbidden
           schema:
