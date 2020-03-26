@@ -62,6 +62,51 @@
                     }
                 }
             }
+        },
+        "/user/user": {
+            "get": {
+                "security": [
+                    {
+                        "OAuth2Password": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "View current user datas",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.LoginResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/helper.EchoResp"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/helper.EchoResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/helper.EchoResp"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -86,7 +131,7 @@
             "type": "object",
             "properties": {
                 "code": {
-                    "description": "Error code explanations\n0000 = Success\n0000 = Error Validation",
+                    "description": "Error code explanations\n0000 = Success\n0001 = Error Validation\n0002 = Function Error\n0003 = Permission denied",
                     "type": "string",
                     "example": "0001"
                 },
@@ -117,7 +162,7 @@
             "type": "object",
             "properties": {
                 "code": {
-                    "description": "Error code explanations\n0000 = Success\n0000 = Error Validation",
+                    "description": "Error code explanations\n0000 = Success\n0001 = Error Validation\n0002 = Function Error\n0003 = Permission denied",
                     "type": "string",
                     "example": "0001"
                 },

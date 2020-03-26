@@ -18,7 +18,9 @@ definitions:
         description: |-
           Error code explanations
           0000 = Success
-          0000 = Error Validation
+          0001 = Error Validation
+          0002 = Function Error
+          0003 = Permission denied
         example: "0001"
         type: string
       details:
@@ -43,7 +45,9 @@ definitions:
         description: |-
           Error code explanations
           0000 = Success
-          0000 = Error Validation
+          0001 = Error Validation
+          0002 = Function Error
+          0003 = Permission denied
         example: "0001"
         type: string
       details:
@@ -93,6 +97,34 @@ paths:
       summary: Login user
       tags:
       - Client
+  /user/user:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.LoginResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.EchoResp'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.EchoResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.EchoResp'
+      security:
+      - OAuth2Password: []
+      summary: View current user datas
+      tags:
+      - User
 securityDefinitions:
   BasicAuth:
     type: basic

@@ -34,7 +34,6 @@ type (
 // Login user using username and password
 // @Summary Login user
 // @Description login returns token and expire time in seconds
-// @securityDefinitions.basic BasicAuth
 // @Tags Client
 // @Accept  json
 // @Produce  json

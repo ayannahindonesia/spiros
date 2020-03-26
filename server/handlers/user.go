@@ -13,6 +13,16 @@ import (
 )
 
 // ViewCurrentUser shows current user's datas
+// @Summary View current user datas
+// @Tags User
+// @Accept  json
+// @Produce  json
+// @Security OAuth2Password
+// @Router /user/user [get]
+// @Success 200 {object} LoginResponse
+// @Failure 403 {object} helper.EchoResp
+// @Failure 404 {object} helper.EchoResp
+// @Failure 500 {object} helper.EchoResp
 func ViewCurrentUser(c echo.Context) error {
 	defer c.Request().Body.Close()
 
