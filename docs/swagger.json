@@ -19,6 +19,7 @@
                         "BasicAuth": []
                     }
                 ],
+                "description": "login returns token and expire time in seconds",
                 "consumes": [
                     "application/json"
                 ],
@@ -85,6 +86,7 @@
             "type": "object",
             "properties": {
                 "code": {
+                    "description": "Error code explanations\n0000 = Success\n0000 = Error Validation",
                     "type": "string",
                     "example": "0001"
                 },
@@ -115,6 +117,7 @@
             "type": "object",
             "properties": {
                 "code": {
+                    "description": "Error code explanations\n0000 = Success\n0000 = Error Validation",
                     "type": "string",
                     "example": "0001"
                 },

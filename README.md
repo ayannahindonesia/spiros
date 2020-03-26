@@ -36,3 +36,6 @@ SPIROS_DB_MAXOPENCONNECTION
 
 ## Installation
 to be writen.
+
+## API Documentation
+RESTful APIs documentation can be opened in url /swagger/index.html. for writing documentation guide, please refer to [guide](https://github.com/swaggo/swag)

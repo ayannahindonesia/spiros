@@ -49,6 +49,10 @@ func main() {
 		seed.Seed()
 		os.Exit(0)
 		break
+	case "unseed":
+		seed.Unseed()
+		os.Exit(0)
+		break
 	}
 }
 

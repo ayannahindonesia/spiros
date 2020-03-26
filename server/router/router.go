@@ -8,10 +8,13 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
-	// import swagger api documentation drive
-	_ "spiros/docs"
+	"spiros/db"
+	"spiros/models"
 
 	echoSwagger "github.com/swaggo/echo-swagger"
+
+	// import swagger api documentation drive
+	_ "spiros/docs"
 )
 
 // CustomValidator type for json body validation
@@ -54,6 +57,26 @@ func NewRouter() *echo.Echo {
 	e.Validator = &CustomValidator{validator: validator.New()}
 
 	ClientGroup(e)
+	UserGroup(e)
+
+	generateRoutePermissions(e)
 
 	return e
+}
+
+func generateRoutePermissions(e *echo.Echo) {
+	routes := e.Routes()
+	err := db.DB.Exec("TRUNCATE TABLE permissions RESTART IDENTITY CASCADE").Error
+	if err != nil {
+		panic(err)
+	}
+
+	for _, route := range routes {
+		permission := models.Permission{
+			Method: route.Method,
+			Path:   route.Path,
+			Name:   route.Name,
+		}
+		db.DB.Create(&permission)
+	}
 }

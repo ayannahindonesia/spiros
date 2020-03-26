@@ -1,6 +1,7 @@
 package router
 
 import (
+	"os"
 	"spiros/server/handlers"
 	"spiros/server/helper"
 
@@ -13,5 +14,19 @@ func ClientGroup(e *echo.Echo) {
 	g := e.Group("/client")
 	g.Use(middleware.BasicAuth(helper.ValidateClient))
 
-	g.POST("/login", handlers.Login)
+	g.POST("/login", handlers.Login).Name = "client-login"
+}
+
+// UserGroup group of authenticated user's endpoints
+func UserGroup(e *echo.Echo) {
+	g := e.Group("/user")
+
+	g.Use(middleware.JWTWithConfig(middleware.JWTConfig{
+		SigningMethod: "HS512",
+		SigningKey:    []byte(os.Getenv("SPIROS_JWT_SECRET")),
+	}))
+
+	g.Use(helper.ValidateUserPermission)
+
+	g.GET("/user", handlers.ViewCurrentUser).Name = "user-user"
 }

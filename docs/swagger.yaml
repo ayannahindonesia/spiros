@@ -15,6 +15,10 @@ definitions:
   handlers.LoginResponse:
     properties:
       code:
+        description: |-
+          Error code explanations
+          0000 = Success
+          0000 = Error Validation
         example: "0001"
         type: string
       details:
@@ -36,6 +40,10 @@ definitions:
   helper.EchoResp:
     properties:
       code:
+        description: |-
+          Error code explanations
+          0000 = Success
+          0000 = Error Validation
         example: "0001"
         type: string
       details:
@@ -57,6 +65,7 @@ paths:
     post:
       consumes:
       - application/json
+      description: login returns token and expire time in seconds
       parameters:
       - description: JSON request body
         in: body

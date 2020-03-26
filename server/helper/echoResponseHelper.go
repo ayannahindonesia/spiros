@@ -4,6 +4,11 @@ import "github.com/labstack/echo"
 
 // EchoResp type
 type EchoResp struct {
+	// Error code explanations
+	// 0000 = Success
+	// 0001 = Error Validation
+	// 0002 = Function Error
+	// 0003 = Permission denied
 	Code    string      `json:"code" example:"0001"`
 	Message string      `json:"message" example:"this is example message"`
 	Details interface{} `json:"details"`

@@ -33,6 +33,7 @@ type (
 
 // Login user using username and password
 // @Summary Login user
+// @Description login returns token and expire time in seconds
 // @securityDefinitions.basic BasicAuth
 // @Tags Client
 // @Accept  json
@@ -49,12 +50,12 @@ func Login(c echo.Context) error {
 	body := new(LoginPayload)
 
 	if err := c.Bind(body); err != nil {
-		return helper.ReturnJSONresp(c, http.StatusInternalServerError, "0000", "Error", map[string]interface{}{
+		return helper.ReturnJSONresp(c, http.StatusInternalServerError, "0002", "Request body bind error", map[string]interface{}{
 			"error": fmt.Sprintf("%+v", err),
 		})
 	}
 	if err := c.Validate(body); err != nil {
-		return helper.ReturnJSONresp(c, http.StatusInternalServerError, "0000", "Error", map[string]interface{}{
+		return helper.ReturnJSONresp(c, http.StatusInternalServerError, "0001", "Request body validation error", map[string]interface{}{
 			"error": fmt.Sprintf("%+v", err),
 		})
 	}
@@ -62,28 +63,28 @@ func Login(c echo.Context) error {
 	user := models.User{}
 	err := db.DB.Model(&models.User{}).Find(&user, models.User{Username: body.Username}).Error
 	if err != nil {
-		return helper.ReturnJSONresp(c, http.StatusNotFound, "0000", "Error", map[string]interface{}{
+		return helper.ReturnJSONresp(c, http.StatusNotFound, "0001", "Username not found", map[string]interface{}{
 			"error": fmt.Sprint(err),
 		})
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
 	if err != nil {
-		return helper.ReturnJSONresp(c, http.StatusInternalServerError, "0000", "Error", map[string]interface{}{
+		return helper.ReturnJSONresp(c, http.StatusInternalServerError, "0001", "Wrong password", map[string]interface{}{
 			"error": fmt.Sprint(err),
 		})
 	}
 
 	expiresIn, err := strconv.ParseInt(os.Getenv("SPIROS_JWT_EXPIRES"), 10, 64)
 	if err != nil {
-		return helper.ReturnJSONresp(c, http.StatusInternalServerError, "0000", "Error", map[string]interface{}{
+		return helper.ReturnJSONresp(c, http.StatusInternalServerError, "0002", "Parsing int error", map[string]interface{}{
 			"error": fmt.Sprint(err),
 		})
 	}
 
 	token, err := helper.GenerateJWTtoken(fmt.Sprint(user.ID))
 	if err != nil {
-		return helper.ReturnJSONresp(c, http.StatusInternalServerError, "0000", "Error", map[string]interface{}{
+		return helper.ReturnJSONresp(c, http.StatusInternalServerError, "0002", "Generate token error", map[string]interface{}{
 			"error": fmt.Sprint(err),
 		})
 	}

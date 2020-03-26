@@ -85,6 +85,10 @@ func Migrate() {
 	err := DB.AutoMigrate(
 		&models.Client{},
 		&models.User{},
+		&models.Role{},
+		&models.Permission{},
+		&models.UserRole{},
+		&models.RolePermission{},
 	).Error
 	if err != nil {
 		panic(err)

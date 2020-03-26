@@ -2,6 +2,7 @@ package helper
 
 import (
 	"log"
+	"net/http"
 	"os"
 	"spiros/db"
 	"spiros/models"
@@ -47,4 +48,26 @@ func ValidateClient(key, secret string, c echo.Context) (bool, error) {
 		return false, err
 	}
 	return true, nil
+}
+
+// ValidateUserPermission check user permission by matching routes name and user's role permission
+func ValidateUserPermission(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		userToken := c.Get("user").(*jwt.Token)
+		tokenClaims := userToken.Claims.(jwt.MapClaims)
+		userID, _ := strconv.ParseUint(tokenClaims["jti"].(string), 10, 64)
+
+		rolePermission := models.RolePermission{}
+		err := db.DB.Table("role_permissions").
+			Joins("INNER JOIN permissions ON permissions.id = role_permissions.permission_id").
+			Joins("INNER JOIN user_roles ON user_roles.role_id = role_permissions.role_id").
+			Where("permissions.path = ?", c.Path()).
+			Where("user_roles.user_id = ?", userID).
+			First(&rolePermission).
+			Error
+		if err != nil {
+			return ReturnJSONresp(c, http.StatusForbidden, "0003", "User don't have permission access", nil)
+		}
+		return next(c)
+	}
 }
