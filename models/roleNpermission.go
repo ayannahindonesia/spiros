@@ -21,7 +21,7 @@ type (
 		gorm.Model
 		Method          string           `json:"method" gorm:"column:method;type:varchar(255)"`
 		Path            string           `json:"path" gorm:"column:path;type:varchar(255)"`
-		Name            string           `json:"name" gorm:"column:name;type:varchar(255);UNIQUE;NOT NULL"`
+		Name            string           `json:"name" gorm:"column:name;type:varchar(255)"`
 		RolePermissions []RolePermission `gorm:"foreignkey:PermissionID"`
 	}
 	// RolePermission struct
